@@ -24,8 +24,26 @@
             <p><strong>Origin queue</strong>:<br><%= d.origin %></p>
             <p><strong>Status</strong>:<br><%= d.status %></p>
             <p><strong>Result</strong>:<br><%= d.result %></p>
+            <p><strong>Metadata</strong>:<br><%= d.metadata %></p>
+            <p><strong>Depends on</strong>:</p>
+                <% if (d.depends_on) { %>
+                    <ul>
+                        <%
+                            var dependsOnList = d.depends_on.split(',');
+                            var dependsOnStatusList = d.depends_on_status.split(',');
+                            for (var i = 0; i < dependsOnList.length; i++) {
+                                var jobId = dependsOnList[i].trim();
+                                var status = dependsOnStatusList[i].trim();
+                        %>
+                            <% if (status === "active") { %>
+                                <li><a href="<%= url_for_single_job_view(jobId) %>"><%= jobId %></a></li>
+                            <% } else { %>
+                                <li><%= jobId %> (Expired)</li>
+                            <% } %>
+                        <% } %>
+                    </ul>
+                <% } %>
         </span>
-
         <span class="col-6">
             <p><strong>Created at</strong>:<br> <%= d.created_at %></p>
             <p><strong>Enqueued at</strong>:<br> <%= d.enqueued_at %></p>
