@@ -592,7 +592,7 @@ def job_info(instance_number, job_id):
     )
     dep_ids = [di.decode("utf-8").split(':')[-1].strip() for di in job.dependency_ids]
     if len(dep_ids) > 0:
-        result["depends_on"] = ','.join(dep_ids)
+        result["depends_on"] = dep_ids
         status = []
         for dep_id in dep_ids:
             try:
@@ -600,7 +600,7 @@ def job_info(instance_number, job_id):
                 status.append('active')
             except NoSuchJobError:
                 status.append('expired')
-        result["depends_on_status"] = ','.join(status)
+        result["depends_on_status"] = status
     return result
 
 

@@ -29,11 +29,9 @@
                 <% if (d.depends_on) { %>
                     <ul>
                         <%
-                            var dependsOnList = d.depends_on.split(',');
-                            var dependsOnStatusList = d.depends_on_status.split(',');
-                            for (var i = 0; i < dependsOnList.length; i++) {
-                                var jobId = dependsOnList[i].trim();
-                                var status = dependsOnStatusList[i].trim();
+                            for (var i = 0; i < d.depends_on.length; i++) {
+                                var jobId = d.depends_on[i].trim();
+                                var status = d.depends_on_status[i].trim();
                         %>
                             <% if (status === "active") { %>
                                 <li><a href="<%= url_for_single_job_view(jobId) %>"><%= jobId %></a></li>
