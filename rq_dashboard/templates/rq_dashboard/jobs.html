@@ -33,12 +33,12 @@
         <a href="{{ url_for('rq_dashboard.empty_queue', queue_name=queue.name, registry_name=registry_name) }}" id="empty-btn"
             class="btn btn-outline-danger btn-sm" style="float: right" data-toggle="tooltip"
             title="Remove all jobs from this queue (<b>destructive</b>)" data-html=true>Empty queue</a>
-        {% endif %}
-        {% if (enable_delete and registry_name == 'started') %}
+        {% elif (enable_delete and registry_name == 'started') %}
         <a href="{{ url_for('rq_dashboard.empty_queue', queue_name=queue.name, registry_name=registry_name) }}" id="empty-btn"
             class="btn btn-outline-danger btn-sm" style="float: right" data-toggle="tooltip"
             title="Stop and remove all jobs from this queue" data-html=true>Stop jobs</a>
         {% endif %}
+
         {% if registry_name == 'queued' %}
         <a href="{{ url_for('rq_dashboard.compact_queue', queue_name=queue.name) }}" id="compact-btn"
             class="btn btn-outline-success btn-sm" style="float: right; margin-right: 8px;" data-toggle="tooltip"
