@@ -5,6 +5,7 @@ var url_for = function(name, param) {
     else if (name == 'workers') { url += {{ current_instance|tojson|safe }} + '/data/workers.json'; }
     else if (name == 'workers_view') { url += {{ current_instance|tojson|safe }} + '/view/workers'; }
     else if (name == 'delete_job') { url += 'job/' + encodeURIComponent(param) + '/delete'; }
+    else if (name == 'stop_job') { url += 'job/' + encodeURIComponent(param) + '/stop'; }
     else if (name == 'requeue_job') { url += 'job/' + encodeURIComponent(param) + '/requeue'; }
     return url;
 };

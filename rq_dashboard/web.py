@@ -42,7 +42,8 @@ from rq import (
     push_connection,
     requeue_job,
 )
-from rq.exceptions import NoSuchJobError
+from rq.command import send_stop_job_command
+from rq.exceptions import NoSuchJobError, InvalidJobOperation
 from rq.job import Job
 from rq.registry import (
     DeferredJobRegistry,
@@ -413,6 +414,25 @@ def delete_job_view(job_id, registry=None):
     return dict(status="OK")
 
 
+@blueprint.route("/job/<job_id>/stop", methods=["POST"])
+@check_delete_enable
+@jsonify
+def stop_job(job_id, registry=None):
+    try:
+        job = Job.fetch(job_id)
+        for dependent_id in job.dependent_ids:
+            Job.fetch(dependent_id).cancel()
+        send_stop_job_command(current_app.redis_conn, job_id)
+    except NoSuchJobError:
+        if registry:
+            registry.remove(job_id)
+        return dict(status="ERROR")
+    except InvalidJobOperation:
+        return dict(status="ERROR")
+
+    return dict(status="OK")
+
+
 @blueprint.route("/job/<job_id>/requeue", methods=["POST"])
 @jsonify
 def requeue_job_view(job_id):
@@ -449,7 +469,7 @@ def empty_queue(queue_name, registry_name):
     elif registry_name == "started":
         registry = StartedJobRegistry(queue_name)
         for id in registry.get_job_ids():
-            delete_job_view(id, registry)
+            stop_job(id, registry)
     elif registry_name == "finished":
         registry = FinishedJobRegistry(queue_name)
         for id in registry.get_job_ids():

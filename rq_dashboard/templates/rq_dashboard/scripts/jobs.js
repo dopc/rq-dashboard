@@ -177,6 +177,25 @@
         return false;
     });
 
+        // Enable the AJAX behaviour of the stop button
+    $tbody.on('click', '[data-role=stop-job-btn]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var $this = $(this),
+            $row = $this.parents('tr'),
+            job_id = $row.data('job-id'),
+            url = url_for('stop_job', job_id);
+
+        modalConfirm('stop job', function() {
+            $.post(url, function(data) {
+                $row.fadeOut('fast', function() { $row.remove(); });
+            });
+        });
+
+        return false;
+    });
+
     // Enable the AJAX behaviour of the requeue button
     $tbody.on('click', '[data-role=requeue-job-btn]', function(e) {
         e.preventDefault();
