@@ -386,6 +386,7 @@ def job_view(instance_number, job_id):
             current_instance=instance_number,
             instance_list=escape_format_instance_list(current_app.config.get("RQ_DASHBOARD_REDIS_URL")),
             id=job.id,
+            status=job.get_status(refresh=True),
             rq_url_prefix=url_for(".queues_overview"),
             rq_dashboard_version=rq_dashboard_version,
             rq_version=rq_version,
