@@ -68,6 +68,17 @@
         return false;
     });
 
+    $("#stop-job-btn").click(function() {
+        var url = url_for('stop_job', job_id);
+
+        modalConfirm('stop job', function() {
+            $.post(url, {}, function(){
+                $(location).attr("href", url_for('queues_view'));
+            });
+        });
+        return false;
+    });
+
     $("#requeue-job-btn").click (function() {
         var url = url_for('requeue_job', job_id);
 

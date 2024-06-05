@@ -9,8 +9,10 @@
 
         <span class="col-2">
             <button id="requeue-job-btn" class="btn btn-outline-warning btn-sm" style="display: none">Requeue</button>
-            {% if enable_delete %}
+            {% if enable_delete and status != 'started' %}
             <button id="delete-job-btn" class="btn btn-outline-danger btn-sm">Delete</button>
+            {% elif enable_delete and status == 'started' %}
+            <button id="stop-job-btn" class="btn btn-outline-danger btn-sm">Stop</button>
             {% endif %}
         </span>
     </div>
